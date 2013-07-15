@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <title>Notepad</title>
+  <style type="text/css">
+    * { box-sizing: border-box; }
+    body{ height: 100%; width: 100%; margin: 0; }
+    iframe { margin: 0 auto; width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+
+  <iframe src="data:text/html, <html><head><title>Notepad</title><link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'><style type='text/css'> html { font-family: 'Open Sans' } * { -webkit-transition: all linear 1s; }</style><script>window.onload=function(){var e=false;var t=0;setInterval(function(){if(!e){t=Math.round(Math.max(0,t-Math.max(t/3,1)));}var n=(255-t*2).toString(16);document.body.style.backgroundColor='#ff'+n+''+n;},1e3);var n=null;var m=null;document.onkeydown=function(){t=Math.min(128,t+2);e=true;clearTimeout(n);n=setTimeout(function(){e=false;},1500);clearTimeout(m);m=setTimeout(function(){parent.postMessage(document.body.innerHTML, 'http://sandbox.local');}, 3000);};};</script></head><body contenteditable style='font-size:2rem;line-height:1.4;max-width:60rem;margin:0 auto;padding:4rem;'>" seamless allowfullscreen></iframe>
+
+  <script>
+    window.onload = function() {
+      //add previously saved note into iframe
+      var data = window.localStorage.getItem("savednote"),
+        iframe = document.getElementsByTagName("iframe")[0],
+        data_uri = iframe.src;
+
+      if(data != null) {
+        data_uri = iframe.src + data;
+      }
+      else
+      {
+        data_uri = iframe.src + "<h1>Notes</h1><br>";
+      }
+
+      iframe.src = data_uri;
+    }
+
+    //save note
+    window.addEventListener("message", function(event)
+    {
+      window.localStorage.setItem("savednote", event.data);
+    }, false);
+
+  </script>
+</body>
+</html>
+
